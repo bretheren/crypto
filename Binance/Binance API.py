@@ -41,7 +41,7 @@ if ticker['lastPrice'] <= stop_price or ticker['lastPrice'] >= profit_price:
         order_limit_price = profit_limit_price
         order_quantity = profit_quantity
 # place order        
-    order = client.create_test_order(
+    order = client.create_order(
         symbol=crypto_symbol,
         side=client.SIDE_SELL,
         type=client.ORDER_TYPE_LIMIT,
@@ -49,5 +49,3 @@ if ticker['lastPrice'] <= stop_price or ticker['lastPrice'] >= profit_price:
         quantity=order_quantity,
         price=order_limit_price
         )
-
-
