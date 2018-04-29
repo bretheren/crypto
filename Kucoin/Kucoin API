@@ -1,0 +1,52 @@
+# INSTRUCTIONS
+# 1. Install Python package python-binance
+# 2. Set environmemt variables to securely store API Info as below
+# OSX
+# Set environment variabales as below using terminal in Linux/OSX
+# export Kucoin_API_Key='PLACE YOUR API KEY HERE'
+# export Kucoin_API_Secret='PLACE YOUR API SECRET HERE'
+
+# WINDOWS
+# set Kucoin_API_Key='PLACE YOUR API KEY HERE'
+# set Kucoin_API_Secret='PLACE YOUR API SECRET HERE'
+
+import os
+from kucoin.client import Client
+
+# Set variables for script
+crypto_symbol = "DOCK-BTC"
+stop_price = 0.00001560
+stop_limit_price = 0.00001560
+stop_quantity = 10
+profit_price = 0.00001610
+profit_limit_price = 0.00001610
+profit_quantity = 10
+
+# Get your environment keys
+API_KEY = os.environ['Kucoin_API_Key']
+API_SECRET = os.environ['Kucoin_API_Secret']
+client = Client(API_KEY, API_SECRET)
+
+# get ticker to obtain last Price
+ticker = client.get_tick(symbol=crypto_symbol)
+
+# check if price is below stop price or above profit price
+if ticker['lastDealPrice'] <= stop_price or ticker['lastDealPrice'] >= profit_price:
+    if ticker['lastDealPrice'] <= stop_price:
+# set stop loss parameters
+        order_limit_price = stop_limit_price
+        order_quantity = stop_quantity
+    else:
+# set profit take parameters
+        order_limit_price = profit_limit_price
+        order_quantity = profit_quantity
+# place order        
+    order = client.create_order(
+        symbol=crypto_symbol,
+        order_type=client.SIDE_SELL,
+        amount=order_quantity,
+        price=order_limit_price
+        )
+
+
+
